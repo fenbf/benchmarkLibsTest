@@ -1,0 +1,23 @@
+﻿Build started 2016-01-22 08:51:53.
+     1>Project "D:\github\benchmarkLibsTest\celeroTest\celeroTest.vcxproj" on node 4 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"Celero-master\include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt celeroTest.cpp
+         celeroTest.cpp
+     1>D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero/Result.h(136): warning C4251: 'celero::Result::pimpl': class 'celero::Pimpl<celero::Result::Impl>' needs to have dll-interface to be used by clients of class 'celero::Result'
+     1>D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero/Experiment.h(192): warning C4251: 'celero::Experiment::pimpl': class 'celero::Pimpl<celero::Experiment::Impl>' needs to have dll-interface to be used by clients of class 'celero::Experiment'
+     1>D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero/Benchmark.h(104): warning C4251: 'celero::Benchmark::pimpl': class 'celero::Pimpl<celero::Benchmark::Impl>' needs to have dll-interface to be used by clients of class 'celero::Benchmark'
+     1>D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero/ThreadTestFixture.h(81): warning C4251: 'celero::ThreadTestFixture::pimpl': class 'celero::Pimpl<celero::ThreadTestFixture::Impl>' needs to have dll-interface to be used by clients of class 'celero::ThreadTestFixture'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\github\benchmarkLibsTest\Release\celeroTest.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"Celero-master\Release" celero.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\github\benchmarkLibsTest\Release\celeroTest.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\github\benchmarkLibsTest\Release\celeroTest.lib" /MACHINE:X86 /SAFESEH Release\celeroTest.obj
+         Generating code
+         25 of 493 functions ( 5.1%) were compiled, the rest were copied from previous compilation.
+           0 functions were new in current compilation
+           0 functions had inline decision re-evaluated but remain unchanged
+         Finished generating code
+     1>celeroTest.obj : warning LNK4020: a type record in 'd:\github\benchmarklibstest\celerotest\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+         celeroTest.vcxproj -> D:\github\benchmarkLibsTest\Release\celeroTest.exe
+     1>Done Building Project "D:\github\benchmarkLibsTest\celeroTest\celeroTest.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.69

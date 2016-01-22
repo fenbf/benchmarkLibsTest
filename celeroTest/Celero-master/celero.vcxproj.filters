@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Archive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Benchmark.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Callbacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Celero.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Distribution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Executor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\JUnit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Print.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Experiment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Result.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\ResultTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Statistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\TestVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\TestFixture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\ThreadTestFixture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\src\Utilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Archive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Benchmark.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Callbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Celero.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\CommandLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Distribution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Executor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Export.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\FileReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\GenericFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\JUnit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Pimpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\PimplImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Print.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Experiment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Result.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\ResultTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Statistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\TestFixture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\ThreadLocal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\ThreadTestFixture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\TestVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\include\celero\Utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\github\benchmarkLibsTest\celeroTest\Celero-master\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9E654636-B406-3A53-B4F2-71A732F6BBFA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{E06DC552-53CC-3C4A-A834-2A59B13B2E6B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

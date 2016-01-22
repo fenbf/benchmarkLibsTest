@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="favicon.png" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Nonius: statistics-powered micro-benchmarking framework</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Nonius</h1>
+          <h2>A C++ micro-benchmarking framework</h2>
+        </header>
+
+        <hr>
+
+        <section id="main_content">
+            <h2 id="what-is-nonius">What is nonius?</h2>
+
+<p>Nonius is a framework for benchmarking small snippets of C++ code. It is very
+heavily inspired by <a href="http://www.serpentine.com/blog/2009/09/29/criterion-a-new-benchmarking-library-for-haskell/">Criterion</a>, a similar Haskell-based tool. It runs your
+code, measures the time it takes to run, and then performs some statistical
+analysis on those measurements. The <a href="https://github.com/rmartinho/nonius">source code</a> can be found on GitHub.</p>
+
+<h2 id="how-do-i-use-it">How do I use it?</h2>
+
+<h3 id="installation-and-dependencies">Installation and dependencies</h3>
+
+<p>The library itself is header-only so you don’t have to build it. It comes as a
+single header that you can drop somewhere and #include it in your code. You can
+grab the header from the <a href="https://github.com/rmartinho/nonius/releases">releases</a> page.</p>
+
+<p>You will need a C++11 capable compiler; it has been tested with GCC 4.8.3,
+clang 3.5, and VC++ 18.0. Older versions of these compilers may work, but there
+are no guarantees. Newer versions of these compilers are also supported.</p>
+
+<p>The library depends on <a href="http://www.boost.org">Boost</a> for a few mathematical functions, for some
+string algorithms, and, in some versions of VC++, for the timing functions as
+well. Boost.Chrono is not a header-only library, but since it is only used with
+VC++ everything gets linked automatically without intervention. If desired,
+usage of Boost.Chrono can be forced by #defining the macro
+<code>NONIUS_USE_BOOST_CHRONO</code>.</p>
+
+<h3 id="authoring-benchmarks">Authoring benchmarks</h3>
+
+<p>Writing benchmarks with nonius is not complicated, but there are several things
+to keep in mind when doing so. There is a separate <a href="authoring-benchmarks">guide</a> about the subject,
+and there are examples of both simple and advanced usage in the <a href="https://github.com/rmartinho/nonius/tree/devel/examples">examples</a>
+folder.</p>
+
+<h3 id="compiling-benchmarks">Compiling benchmarks</h3>
+
+<p>If you just want to run a quick benchmark you can put everything in one file, as
+in the examples. If you have something more complicated and prefer to separate
+things into different files, it is recommended that you create one small file
+with the runner infrastructure by #defining the macro <code>NONIUS_RUNNER</code> and
+then #including the nonius header.</p>
+
+<p>You can also write your own <code>main</code> function instead, if you need something
+fancy, but for now that API is subject to change and not documented.</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// runner file contents</span>
+<span class="cp">#define NONIUS_RUNNER</span>
+<span class="cp">#include &quot;nonius.h++&quot;</span></code></pre></div>
+
+<p>In other files you don’t #define that macro; just #include the header and write
+the benchmarks.</p>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="c1">// other files</span>
+<span class="cp">#include &quot;nonius.h++&quot;</span>
+
+<span class="c1">// everything else goes here</span></code></pre></div>
+
+<p>Then you compile and link everything together as normal. Keep in mind that the
+statistical analysis is multithreaded so you may need to pass extra flags to
+your compiler (like <code>-pthread</code> in GCC). That gives you an executable with your
+benchmarks and with the nonius standard benchmark runner. And don’t forget to
+enable optimisations!</p>
+
+<h3 id="running-benchmarks">Running benchmarks</h3>
+
+<p>Invoking the standard runner with the <code>--help</code> flag provides information about
+the options available. Here are some examples of common choices:</p>
+
+<blockquote>
+  <p>Run all benchmarks and provide a simple textual report</p>
+
+  <pre><code>$ runner
+</code></pre>
+
+  <p>Run all benchmarks and provide extra details</p>
+
+  <pre><code>$ runner -v
+</code></pre>
+
+  <p>Run all benchmarks collecting 500 samples instead of the default 100, and
+report extra details</p>
+
+  <pre><code>$ runner -v -s 500
+</code></pre>
+
+  <p>Run all benchmarks and output all samples to a CSV file named <code>results.csv</code></p>
+
+  <pre><code>$ runner -r csv -o results.csv
+</code></pre>
+
+  <p>Run all benchmarks and output a JUnit compatible report named <code>results.xml</code></p>
+
+  <pre><code>$ runner -r junit -o results.xml
+</code></pre>
+
+  <p>Run all benchmarks and output an HTML report named <code>results.html</code> with the
+title “Some benchmarks”, using 250 samples per benchmark</p>
+
+  <pre><code>$ runner -r html -o results.html -t "Some benchmarks" -s 250
+</code></pre>
+
+</blockquote>
+
+<p>The runner includes all your benchmarks and it comes equipped with four
+reporters: plain text, CSV with raw timings, JUnit-compatible XML, and an HTML
+file with a scatter plot of the timings. If you execute the runner without
+requesting a particular reporter, it will use plain text to report the results.
+When compiling you can selectively disable any or all of the extra reporters
+by #defining some macros before #including the runner.
+<code>NONIUS_DISABLE_EXTRA_REPORTERS</code> disables everything but plain text;
+<code>NONIUS_DISABLE_X_REPORTER</code>, where <code>X</code> is one of <code>CSV</code>, <code>JUNIT</code>, or <code>HTML</code>
+disables a particular reporter.</p>
+
+<p>The first thing that nonius does when running is testing the clock. By default
+it uses the clock provided by <code>std::chrono::high_resolution_clock</code>. The runner
+estimates the resolution and the cost of using the clock and then prints out
+that estimate.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">clock resolution: mean is 28.1296 ns (20480002 iterations)</span></code></pre></div>
+
+<p>After ascertaining the characteristics of the clock, the benchmarks are run in
+sequence. Each benchmark consists of taking a number of samples determined by
+the command-line flags (defaults to 100). Each of those samples consists of
+running the code being measured for a number of times that makes sure it takes
+enough time that the clock resolution does not affect the measurement. If you’re
+benchmarking code that takes significantly more than the clock resolution to
+run, it will probably run it once for each sample. However, if one run of that
+code is too fast, nonius will scale it by running the code more than once per
+sample. This obviously implies that your benchmarks should be completely
+repeatable. There is also the underlying assumption that the time it takes to run
+the code does not vary wildly.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">benchmarking construct small</span>
+<span class="go">collecting 100 samples, 438 iterations each, in estimated 2.8032 ms</span></code></pre></div>
+
+<p>After the measurements are performed, a statistical <a href="http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29">bootstrapping</a> is performed
+on the samples. The number of resamples for that bootstrapping is configurable
+but defaults to 100000.  After the bootstrapping is done, the runner will print
+estimates for the mean and standard deviation. The estimates come with a lower
+bound and an upper bound, and the confidence interval (which is configurable but
+defaults to 95%).</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">mean: 41.3622 ns, lb 41.3479 ns, ub 41.4251 ns, ci 0.95</span>
+<span class="go">std dev: 0.130953 ns, lb 0.0209896 ns, ub 0.309054 ns, ci 0.95</span></code></pre></div>
+
+<p>After all that, the runner will tell you about any samples that are outliers
+and whether those might be important: if they affect the variance greatly, our
+measurements might not be very trustworthy. It could be that there is another
+factor affecting our measurements (say, some other application that was doing
+some heavy task at the same time), or maybe the code being measure varies wildly
+in performance. Nonius will provide the data; it’s up to you to make sense of
+it.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">found 19 outliers among 100 samples (19%)</span>
+<span class="go">variance is unaffected by outliers</span></code></pre></div>
+
+<p>Outliers are classified as “low” or “high” depending on whether they are above
+or below the mean. They can be “mild” or “severe” if they are relatively far
+from the rest of the measurements. If you request verbose output the default
+reporter will give you outlier classification.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">found 19 outliers among 100 samples (19%)</span>
+<span class="go">  2 (2%) low mild</span>
+<span class="go">  3 (3%) high mild</span>
+<span class="go">  14 (14%) high severe</span>
+<span class="go">variance introduced by outliers: 0.99%</span>
+<span class="go">variance is unaffected by outliers</span></code></pre></div>
+
+<h2 id="licensing">Licensing</h2>
+
+<p>Nonius is released under the <a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a> license, which is essentially a public domain
+dedication with legalese to emulate the public domain as much as possible under
+jurisdictions that do not have such a concept. That means you can really do
+whatever you want with the code in nonius, because I waived as many of my rights
+on it as I am allowed.</p>
+
+<p>However, currently nonius makes use of some code distributed under the
+<a href="http://creativecommons.org/licenses/by-nc/3.0/">CC-BY-NC</a> and the <a href="https://bitbucket.org/ginstrom/cpptemplate/raw/d4263ca998038f7ae18aeb9d2358f0c11f00552d/LICENSE.txt">MIT</a> licenses. The <code>html</code> reporter uses the <a href="http://www.highcharts.com/">Highcharts JS</a>
+and <a href="http://jquery.org/">jQuery</a> libraries for the interactive charts and the <a href="https://bitbucket.org/ginstrom/cpptemplate">cpptemplate</a> library
+for generating HTML from a template. If you want to use only the public domain
+code for whatever reason, you can disable the <code>html</code> reporter easily.</p>
+
+<h2 id="trivia">Trivia</h2>
+
+<p>A <a href="http://en.wikipedia.org/wiki/Nonius_%28device%29">nonius</a> is a device created in 1542 by the Portuguese inventor Pedro Nunes
+(Petrus Nonius in Latin) that improved the accuracy of the astrolabe. It was
+adapted in 1631 by the French mathematician Pierre Vernier to create the vernier
+scale.</p>
+
+
+        </section>
+
+        <footer>
+          Nonius is maintained by <a href="https://github.com/rmartinho">rmf</a><br>
+          Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+      </div>
+    </div>
+  </body>
+</html>
+
