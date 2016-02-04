@@ -23,7 +23,7 @@ public:
 	}
 };
 
-class ParticlesStackFixture : public ParticlesFixture
+class ParticlesObjVectorFixture : public ParticlesFixture
 {
 public:
 	/// Before each run, build a vector of random integers.
@@ -46,7 +46,7 @@ public:
 
 // Run an automatic baseline.  
 // Celero will help make sure enough samples are taken to get a reasonable measurement
-BASELINE_F(ParticlesTest, OnStack, ParticlesStackFixture, 20, 1)
+BASELINE_F(ParticlesTest, ObjVector, ParticlesObjVectorFixture, 20, 1)
 {
 	for (size_t u = 0; u < UPDATES; ++u)
 	{
@@ -55,7 +55,7 @@ BASELINE_F(ParticlesTest, OnStack, ParticlesStackFixture, 20, 1)
 	}
 }
 
-class ParticlesHeapFixture : public ParticlesFixture
+class ParticlesPtrVectorFixture : public ParticlesFixture
 {
 public:
 	virtual bool randomizeAddresses() { return true; }
@@ -92,7 +92,7 @@ public:
 	std::vector<std::shared_ptr<Particle>> particles;
 };
 
-BENCHMARK_F(ParticlesTest, OnHeapRandom, ParticlesHeapFixture, 20, 1)
+BENCHMARK_F(ParticlesTest, PtrVector, ParticlesPtrVectorFixture, 20, 1)
 {
 	for (size_t u = 0; u < UPDATES; ++u)
 	{
@@ -101,13 +101,13 @@ BENCHMARK_F(ParticlesTest, OnHeapRandom, ParticlesHeapFixture, 20, 1)
 	}
 }
 
-class ParticlesHeapNoRandFixture : public ParticlesHeapFixture
+class ParticlesPtrVectorNoRandFixture : public ParticlesPtrVectorFixture
 {
 public:
 	virtual bool randomizeAddresses() { return false; }
 };
 
-BENCHMARK_F(ParticlesTest, OnHeap, ParticlesHeapNoRandFixture, 20, 1)
+BENCHMARK_F(ParticlesTest, PtrVectorNoRand, ParticlesPtrVectorNoRandFixture, 20, 1)
 {
 	for (size_t u = 0; u < UPDATES; ++u)
 	{

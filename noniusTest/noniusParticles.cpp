@@ -13,7 +13,7 @@ NONIUS_BENCHMARK("Test", [](nonius::chronometer meter) {
 	});
 });
 
-NONIUS_BENCHMARK("ParticlesStack", [](nonius::chronometer meter) {
+NONIUS_BENCHMARK("ParticlesObjVector", [](nonius::chronometer meter) {
 	std::vector<Particle> particles(NUM_PARTICLES);
 
 	for (auto &p : particles)
@@ -28,34 +28,37 @@ NONIUS_BENCHMARK("ParticlesStack", [](nonius::chronometer meter) {
 	});
 });
 
-NONIUS_BENCHMARK("ParticlesHeap", [](nonius::chronometer meter) {
-	std::vector<std::shared_ptr<Particle>> particles(NUM_PARTICLES);
-	for (auto &p : particles)
+NONIUS_BENCHMARK("ParticlesPtr", [](nonius::chronometer meter) {
+	for (int count = 1000; count < 10000; count += 1000)
 	{
-		p = std::make_shared<Particle>();
-	}
-
-	for (size_t i = 0; i < NUM_PARTICLES / 2; ++i)
-	{
-		int a = rand() % NUM_PARTICLES;
-		int b = rand() % NUM_PARTICLES;
-		if (a != b)
-			std::swap(particles[a], particles[b]);
-	}
-
-	for (auto &p : particles)
-		p->generate();
-
-	meter.measure([&particles] {
-		for (size_t u = 0; u < UPDATES; ++u)
+		std::vector<std::shared_ptr<Particle>> particles(count);
+		for (auto &p : particles)
 		{
-			for (auto &p : particles)
-				p->update(DELTA_TIME);
+			p = std::make_shared<Particle>();
 		}
-	});
+
+		for (size_t i = 0; i < count / 2; ++i)
+		{
+			int a = rand() % count;
+			int b = rand() % count;
+			if (a != b)
+				std::swap(particles[a], particles[b]);
+		}
+
+		for (auto &p : particles)
+			p->generate();
+
+		meter.measure([&particles] {
+			for (size_t u = 0; u < UPDATES; ++u)
+			{
+				for (auto &p : particles)
+					p->update(DELTA_TIME);
+			}
+		});
+	}
 });
 
-NONIUS_BENCHMARK("ParticlesHeapNoRand", [](nonius::chronometer meter) {
+NONIUS_BENCHMARK("ParticlesPtrNoRand", [](nonius::chronometer meter) {
 	std::vector<std::shared_ptr<Particle>> particles(NUM_PARTICLES);
 	for (auto &p : particles)
 	{
