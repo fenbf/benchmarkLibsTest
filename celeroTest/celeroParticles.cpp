@@ -16,7 +16,7 @@ public:
 		{
 			// ExperimentValues is part of the base class and allows us to specify
 			// some values to control various test runs to end up building a nice graph.
-			problemSpace.push_back(std::make_pair(1000 + i * 1000, uint64_t(0)));
+			problemSpace.push_back(std::make_pair(1000 + i * 1000, uint64_t(i+1)));
 		}
 
 		return problemSpace;
