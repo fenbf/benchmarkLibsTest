@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\benchmark.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\colorprint.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\commandlineflags.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\console_reporter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\csv_reporter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\json_reporter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\log.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\reporter.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\sleep.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\string_util.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\sysinfo.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\walltime.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\re_std.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\fen\Downloads\benchmark-master(1)\benchmark-master\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{560B3582-209D-3984-868A-924C6C165895}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

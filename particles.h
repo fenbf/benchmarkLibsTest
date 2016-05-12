@@ -6,7 +6,8 @@ inline float randF() { return 0.01f*(float)((randSeed++) % 100); }// (float)rand
 static const size_t UPDATES = 1000;
 static const float DELTA_TIME = 1.0f / 60.0f;
 
-class Particle
+template <int BufSize=1>
+class TParticle
 {
 private:
 	float pos[4];
@@ -15,6 +16,7 @@ private:
 	float col[4];
 	float rot;
 	float time;
+	float buf[BufSize];
 public:
 
 	void generate()
@@ -49,7 +51,13 @@ public:
 		rot += vel[3] * dt;
 		time -= dt;
 
+		for (int i = 0; i < BufSize; ++i)
+			buf[i] = vel[i%4] + vel[i%4] + vel[2] + pos[0] + pos[1] + pos[i%4];
+
 		if (time < 0.0f)
 			generate();
 	}
 };
+
+using Particle = TParticle<1>;	// sizeof 19*float = 76bytes
+using Particle160 = TParticle<22>; // sizeof (18 + 22)*float = 160 bytes
