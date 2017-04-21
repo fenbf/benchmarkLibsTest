@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "noniusTest", "noniusTest\noniusTest.vcxproj", "{D2687315-AF52-451B-958B-356644167E78}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "googleBenchmarkTest", "googleBenchmarkTest\googleBenchmarkTest.vcxproj", "{61C67173-51E4-4185-BE85-E17E62FD854F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "googleBenchmarkParticles", "googleBenchmarkTest\googleBenchmarkParticles.vcxproj", "{C4581B9B-0796-4D45-B7F4-200774FC546C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "celeroCompressBools", "celeroTest\celeroCompressBools.vcxproj", "{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,22 @@ Global
 		{C4581B9B-0796-4D45-B7F4-200774FC546C}.Release|x64.Build.0 = Release|x64
 		{C4581B9B-0796-4D45-B7F4-200774FC546C}.Release|x86.ActiveCfg = Release|Win32
 		{C4581B9B-0796-4D45-B7F4-200774FC546C}.Release|x86.Build.0 = Release|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|Win32.Build.0 = Debug|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|x64.ActiveCfg = Debug|x64
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|x64.Build.0 = Debug|x64
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|x86.ActiveCfg = Debug|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Debug|x86.Build.0 = Debug|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|Win32.ActiveCfg = Release|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|Win32.Build.0 = Release|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|x64.ActiveCfg = Release|x64
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|x64.Build.0 = Release|x64
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|x86.ActiveCfg = Release|Win32
+		{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
