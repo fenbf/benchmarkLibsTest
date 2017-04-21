@@ -19,10 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6AF43317-87A3-4DA0-89D5-FCAAEED2A671}</ProjectGuid>
+    <ProjectGuid>{F00DF705-1904-4EAF-84BD-DA7D7ECBE5BB}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>celeroParticles</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <RootNamespace>celeroCompressBools</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -148,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="celeroParticles.cpp" />
+    <ClCompile Include="celeroCompressBools.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
