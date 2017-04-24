@@ -1,10 +1,12 @@
 #include "celero\Celero.h"
 #include <bitset>
 #include <iostream>
+#include <random>
 
 CELERO_MAIN;
 
 static const int SamplesCount = 5;
+static const int IterationsCount = 0;
 static const int ThresholdValue = 254;
 
 void Checker(bool val, bool reference, uint64_t i)
@@ -39,10 +41,13 @@ public:
 		referenceValues.reset(new bool[experimentValue]);
 		arrayLength = experimentValue;
 
-		// set every 
+		std::mt19937 gen(0); //Standard mersenne_twister_engine seeded with 0, constant
+		std::uniform_int_distribution<> dist(0, 255);
+
+		// set every byte
 		for (int64_t i = 0; i < experimentValue; ++i)
 		{
-			inputValues[i] = i % 2 ? ThresholdValue : i % 10;
+			inputValues[i] = dist(gen);
 			referenceValues[i] = inputValues[i] > ThresholdValue;
 		}
 	}
@@ -80,7 +85,7 @@ public:
 
 // Run an automatic baseline.  
 // Celero will help make sure enough samples are taken to get a reasonable measurement
-BASELINE_F(CompressBoolsTest, StdBitset, StdBitsetFixture, SamplesCount, 1)
+BASELINE_F(CompressBoolsTest, StdBitset, StdBitsetFixture, SamplesCount, IterationsCount)
 {
 	for (int64_t i = 0; i < arrayLength; ++i)
 		outputBitset.set(i, inputValues[i] > ThresholdValue);
@@ -105,7 +110,7 @@ public:
 	std::vector<bool> outputVector;
 };
 
-BENCHMARK_F(CompressBoolsTest, StdVector, StdVectorFixture, SamplesCount, 1)
+BENCHMARK_F(CompressBoolsTest, StdVector, StdVectorFixture, SamplesCount, IterationsCount)
 {
 	for (int64_t i = 0; i < arrayLength; ++i)
 		outputVector[i] = inputValues[i] > ThresholdValue;
@@ -141,7 +146,7 @@ public:
 	std::unique_ptr<uint8_t[]> outputValues;
 };
 
-BENCHMARK_F(CompressBoolsTest, SingleVarVersion, ManualVersionFixture, SamplesCount, 1)
+BENCHMARK_F(CompressBoolsTest, SingleVarVersion, ManualVersionFixture, SamplesCount, IterationsCount)
 {
 	uint8_t OutByte = 0;
 	int shiftCounter = 0;
@@ -172,7 +177,7 @@ BENCHMARK_F(CompressBoolsTest, SingleVarVersion, ManualVersionFixture, SamplesCo
 	}
 }
 
-BENCHMARK_F(CompressBoolsTest, NotDepentendVersion, ManualVersionFixture, SamplesCount, 1)
+BENCHMARK_F(CompressBoolsTest, NotDepentendVersion, ManualVersionFixture, SamplesCount, IterationsCount)
 {
 	uint8_t Bits[8] = { 0 };
 	const int64_t lenDivBy8 = (arrayLength / 8) * 8;
