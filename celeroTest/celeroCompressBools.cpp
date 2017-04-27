@@ -7,12 +7,13 @@
 #include <bitset>
 #include <iostream>
 #include <random>
+#include <omp.h>
 
 CELERO_MAIN;
 
 static const int SamplesCount = 5;
 static const int IterationsCount = 0;
-static const int ThresholdValue = 128;
+static const int ThresholdValue = 254;
 
 void Checker(bool val, bool reference, uint64_t i)
 {
@@ -59,7 +60,7 @@ public:
 	}
 
 #ifdef _DEBUG
-	static const int64_t MAX_ARRAY_LEN{ 100 };
+	static const int64_t MAX_ARRAY_LEN{ 5000 };
 	static const int64_t BENCH_STEPS{ 1 };
 #else
 	static const int64_t MAX_ARRAY_LEN{ 500000 };
@@ -330,14 +331,11 @@ BENCHMARK_F(CompressBoolsTest, PackedStructVersion, PackedStructFixture, Samples
 
 BENCHMARK_F(CompressBoolsTest, WithOpenMP, ManualVersionFixture, SamplesCount, IterationsCount)
 {
-	uint8_t Bits[8] = { 0 };
-	const int64_t lenDivBy8 = (arrayLength / 8) * 8;
-
-	auto pInputData = inputValues.get();
-	auto pOutputByte = outputValues.get();
-
-	for (int64_t j = 0; j < lenDivBy8; j += 8)
+	uint8_t Bits[8];
+#pragma omp parallel for private (Bits)
+	for (int i = 0; i < numFullBytes; ++i)
 	{
+		auto pInputData = inputValues.get() + i*8;
 		Bits[0] = pInputData[0] > ThresholdValue ? 0x01 : 0;
 		Bits[1] = pInputData[1] > ThresholdValue ? 0x02 : 0;
 		Bits[2] = pInputData[2] > ThresholdValue ? 0x04 : 0;
@@ -347,18 +345,18 @@ BENCHMARK_F(CompressBoolsTest, WithOpenMP, ManualVersionFixture, SamplesCount, I
 		Bits[6] = pInputData[6] > ThresholdValue ? 0x40 : 0;
 		Bits[7] = pInputData[7] > ThresholdValue ? 0x80 : 0;
 
-		*pOutputByte++ = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6] | Bits[7];
-		pInputData += 8;
+		outputValues.get()[i] = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6] | Bits[7];
 	}
-	if (arrayLength & 7)
+	if (numFullBytes < numBytes)
 	{
+		uint8_t Bits[8] = { 0 };
 		auto RestW = arrayLength & 7;
-		memset(Bits, 0, 8);
+		auto pInputData = inputValues.get() + numFullBytes * 8;
 		for (long long i = 0; i < RestW; ++i)
 		{
 			Bits[i] = *pInputData == ThresholdValue ? 1 << i : 0;
 			pInputData++;
 		}
-		*pOutputByte++ = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6] | Bits[7];
+		outputValues.get()[numFullBytes] = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6]/* | Bits[7]*/;
 	}
 }
