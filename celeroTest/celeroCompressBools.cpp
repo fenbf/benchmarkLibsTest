@@ -8,17 +8,26 @@
 #include <iostream>
 #include <random>
 #include <omp.h>
+#include <emmintrin.h>
 
 CELERO_MAIN;
 
 static const int SamplesCount = 5;
-static const int IterationsCount = 0;
-static const int ThresholdValue = 254;
+static const int IterationsCount = 0; // Celero will pick the number...
+static const int ThresholdValue = 127;
+static const int MAX_DIST = 255;
 
 void Checker(bool val, bool reference, uint64_t i)
 {
 	if (val != reference)
 		std::cout << "Mismatch at index: " << i << "\n";
+}
+
+bool GetBoolAt(int64_t pos, uint8_t* outputValues)
+{
+	auto bytePos = pos / 8;
+	auto bitPos = pos % 8;
+	return (*(outputValues + bytePos)) & (1 << bitPos);
 }
 
 class CompressBoolsFixture : public celero::TestFixture
@@ -46,10 +55,9 @@ public:
 		arrayLength = static_cast<size_t>(experimentValue);
 		inputValues.reset(new int[arrayLength]);
 		referenceValues.reset(new bool[arrayLength]);
-		
 
 		std::mt19937 gen(0); //Standard mersenne_twister_engine seeded with 0, constant
-		std::uniform_int_distribution<> dist(0, 255);
+		std::uniform_int_distribution<> dist(0, MAX_DIST);
 
 		// set every byte, copute reference values
 		for (size_t i = 0; i < experimentValue; ++i)
@@ -60,7 +68,7 @@ public:
 	}
 
 #ifdef _DEBUG
-	static const int64_t MAX_ARRAY_LEN{ 5000 };
+	static const int64_t MAX_ARRAY_LEN{ 100 };
 	static const int64_t BENCH_STEPS{ 1 };
 #else
 	static const int64_t MAX_ARRAY_LEN{ 500000 };
@@ -94,9 +102,7 @@ public:
 BASELINE_F(CompressBoolsTest, NoPackingVersion, NoPackingFixture, SamplesCount, IterationsCount)
 {
 	for (size_t i = 0; i < arrayLength; ++i)
-	{
 		outputValues[i] = inputValues[i] > ThresholdValue;
-	}
 }
 
 class StdBitsetFixture : public CompressBoolsFixture
@@ -159,14 +165,7 @@ public:
 	virtual void tearDown()
 	{
 		for (size_t i = 0; i < arrayLength; ++i)
-			Checker(getBoolAt(i), referenceValues[i], i);
-	}
-
-	bool getBoolAt(int64_t pos)
-	{
-		auto bytePos = pos / 8;
-		auto bitPos = pos % 8;
-		return (*(outputValues.get() + bytePos)) & (1 << bitPos);
+			Checker(GetBoolAt(i, outputValues.get()), referenceValues[i], i);
 	}
 
 	unsigned int numBytes;
@@ -229,14 +228,15 @@ BENCHMARK_F(CompressBoolsTest, NotDepentendVersion, ManualVersionFixture, Sample
 	}
 	if (arrayLength & 7)
 	{
+		// note that we'll use max 7 elements, so max is Bits[6]... (otherwise we would get another full byte)
 		auto RestW = arrayLength & 7;
 		memset(Bits, 0, 8);
 		for (long long i = 0; i < RestW; ++i)
 		{
-			Bits[i] = *pInputData == ThresholdValue ? 1 << i : 0;
+			Bits[i] = *pInputData > ThresholdValue ? 1 << i : 0;
 			pInputData++;
 		}
-		*pOutputByte++ = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6] | Bits[7];
+		*pOutputByte++ = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6];
 	}
 }
 
@@ -354,9 +354,87 @@ BENCHMARK_F(CompressBoolsTest, WithOpenMP, ManualVersionFixture, SamplesCount, I
 		auto pInputData = inputValues.get() + numFullBytes * 8;
 		for (long long i = 0; i < RestW; ++i)
 		{
-			Bits[i] = *pInputData == ThresholdValue ? 1 << i : 0;
+			Bits[i] = *pInputData > ThresholdValue ? 1 << i : 0;
 			pInputData++;
 		}
-		outputValues.get()[numFullBytes] = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6]/* | Bits[7]*/;
+		outputValues.get()[numFullBytes] = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6];
+	}
+}
+
+class SimdVersionFixture : public CompressBoolsFixture
+{
+public:
+	virtual void setUp(int64_t experimentValue) override
+	{
+		CompressBoolsFixture::setUp(experimentValue);
+
+		numBytes = static_cast<unsigned int>((experimentValue + 7) / 8);
+		numFullBytes = static_cast<unsigned int>((experimentValue) / 8);
+		alignedOutputValues = (uint8_t *)_aligned_malloc(numBytes, 16);
+
+		signedInputValues.reset(new int8_t[arrayLength]);
+		for (size_t i = 0; i < arrayLength; ++i)
+			signedInputValues[i] = inputValues[i] - 128;
+	}
+
+	virtual void tearDown()
+	{
+		for (size_t i = 0; i < arrayLength; ++i)
+			Checker(GetBoolAt(i, alignedOutputValues), referenceValues[i], i);
+
+		if (alignedOutputValues)
+		{
+			_aligned_free(alignedOutputValues);
+			alignedOutputValues = nullptr;
+		}
+	}
+
+	unsigned int numBytes;
+	unsigned int numFullBytes;
+	uint8_t* alignedOutputValues{ nullptr };
+	std::unique_ptr<int8_t[]> signedInputValues;
+};
+
+BENCHMARK_F(CompressBoolsTest, SimdVersion, SimdVersionFixture, SamplesCount, IterationsCount)
+{
+	uint16_t Bits[16] = { 0 };
+	const size_t lenDiv16y16 = (arrayLength / 16) * 16; // full packs of 16 values...
+
+	const __m128i sse127 = _mm_set1_epi8(127);
+	const int8_t ConvertedThreshold = ThresholdValue - 128;
+	const __m128i sseThresholds = _mm_set1_epi8(ConvertedThreshold);
+
+	auto pInputData = signedInputValues.get();
+	auto pOutputByte = alignedOutputValues;
+	for (size_t j = 0; j < lenDiv16y16; j += 16)
+	{
+		/*const auto inPixelReg = _mm_set_epi8(pInputData[0], pInputData[1], pInputData[2], pInputData[3],
+			pInputData[4], pInputData[5], pInputData[6], pInputData[7],
+			pInputData[8], pInputData[9], pInputData[10], pInputData[11],
+			pInputData[12], pInputData[13], pInputData[14], pInputData[15]);*/
+		const auto in16Values = _mm_set_epi8(pInputData[15], pInputData[14], pInputData[13], pInputData[12],
+			pInputData[11], pInputData[10], pInputData[9], pInputData[8],
+			pInputData[7], pInputData[6], pInputData[5], pInputData[4],
+			pInputData[3], pInputData[2], pInputData[1], pInputData[0]);
+		const auto cmpRes = _mm_cmpgt_epi8(in16Values, sseThresholds);
+		const auto packed = _mm_movemask_epi8(cmpRes);
+		*((uint16_t *)pOutputByte) = static_cast<uint16_t>(packed);
+		//*pOutputByte++ = (packed & 0x0000FF00) >> 8;
+		//*pOutputByte++ = packed & 0x000000FF;
+		pOutputByte += 2;
+		pInputData += 16;
+	}
+	if (arrayLength & 15)
+	{
+		auto RestW = arrayLength & 15;
+		memset(Bits, 0, 16 * sizeof(uint16_t));
+		for (size_t i = 0; i < RestW; ++i)
+		{
+			Bits[i] = *pInputData > ConvertedThreshold ? 1 << i : 0;
+			pInputData++;
+		}
+		*pOutputByte++ = Bits[0] | Bits[1] | Bits[2] | Bits[3] | Bits[4] | Bits[5] | Bits[6] | Bits[7];
+		if (RestW > 8)
+			*pOutputByte++ = (Bits[8] | Bits[9] | Bits[10] | Bits[11] | Bits[12] | Bits[13] | Bits[14] | Bits[15]) >> 8;
 	}
 }
