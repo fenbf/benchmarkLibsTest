@@ -71,7 +71,7 @@ public:
 	static const int64_t MAX_ARRAY_LEN{ 100 };
 	static const int64_t BENCH_STEPS{ 1 };
 #else
-	static const int64_t MAX_ARRAY_LEN{ 500000 };
+	static const int64_t MAX_ARRAY_LEN{ 5000000 };
 	static const int64_t BENCH_STEPS{ 5 };
 #endif
 	
@@ -300,33 +300,33 @@ BENCHMARK_F(CompressBoolsTest, PackedStructVersion, PackedStructFixture, Samples
 
 	bool8 out;
 
-	for (int64_t j = 0; j < lenDivBy8; j += 8)
-	{
-		out.val0 = pInputData[0] > ThresholdValue;
-		out.val1 = pInputData[1] > ThresholdValue;
-		out.val2 = pInputData[2] > ThresholdValue;
-		out.val3 = pInputData[3] > ThresholdValue;
-		out.val4 = pInputData[4] > ThresholdValue;
-		out.val5 = pInputData[5] > ThresholdValue;
-		out.val6 = pInputData[6] > ThresholdValue;
-		out.val7 = pInputData[7] > ThresholdValue;
+for (int64_t j = 0; j < lenDivBy8; j += 8)
+{
+	out.val0 = pInputData[0] > ThresholdValue;
+	out.val1 = pInputData[1] > ThresholdValue;
+	out.val2 = pInputData[2] > ThresholdValue;
+	out.val3 = pInputData[3] > ThresholdValue;
+	out.val4 = pInputData[4] > ThresholdValue;
+	out.val5 = pInputData[5] > ThresholdValue;
+	out.val6 = pInputData[6] > ThresholdValue;
+	out.val7 = pInputData[7] > ThresholdValue;
 
-		*pOutputByte++ = out;
-		pInputData += 8;
-	}
-	if (arrayLength & 7)
-	{
-		auto RestW = arrayLength & 7;
-		out = { 0, 0, 0, 0, 0, 0, 0, 0 };
-		if (RestW > 6) out.val6 = pInputData[6] > ThresholdValue;
-		if (RestW > 5) out.val5 = pInputData[5] > ThresholdValue;
-		if (RestW > 4) out.val4 = pInputData[4] > ThresholdValue;
-		if (RestW > 3) out.val3 = pInputData[3] > ThresholdValue;
-		if (RestW > 2) out.val2 = pInputData[2] > ThresholdValue;
-		if (RestW > 1) out.val1 = pInputData[1] > ThresholdValue;
-		if (RestW > 0) out.val0 = pInputData[0] > ThresholdValue;
-		*pOutputByte++ = out;
-	}
+	*pOutputByte++ = out;
+	pInputData += 8;
+}
+if (arrayLength & 7)
+{
+	auto RestW = arrayLength & 7;
+	out = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	if (RestW > 6) out.val6 = pInput[6] > Threshold;
+	if (RestW > 5) out.val5 = pInput[5] > Threshold;
+	if (RestW > 4) out.val4 = pInput[4] > Threshold;
+	if (RestW > 3) out.val3 = pInput[3] > Threshold;
+	if (RestW > 2) out.val2 = pInput[2] > Threshold;
+	if (RestW > 1) out.val1 = pInput[1] > Threshold;
+	if (RestW > 0) out.val0 = pInput[0] > Threshold;
+	*pOutputByte++ = out;
+}
 }
 
 BENCHMARK_F(CompressBoolsTest, WithOpenMP, ManualVersionFixture, SamplesCount, IterationsCount)
